@@ -11,6 +11,7 @@ pipeline{
                         sh '''
                            chmod +x gradlew
                            ./gradlew sonarqube
+                       '''
                     }
                 }
             }

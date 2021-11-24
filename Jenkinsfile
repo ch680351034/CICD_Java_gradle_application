@@ -38,6 +38,7 @@ pipeline{
                 script {
                     withCredentials([string(credentialsId: 'docker-registry-pass', variable: 'docker-reg-pass')]) {
                        sh '''
+                       whereis docker
                        docker build -t ${IMAGE_NAME}:${TAG} .
                        docker login -u admin -p ${docker-reg-pass} ${REGISTRY_NAME}
                        docker push ${IMAGE_NAME}:${TAG}

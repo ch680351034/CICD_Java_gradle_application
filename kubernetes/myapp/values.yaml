@@ -1,16 +1,13 @@
-# Default values for myapp.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-replicaCount: 2
+replicaCount: 1
 
 image:
-  repository: IMAGE_NAME
+  repository: 212.2.243.207:8083/springapp
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: IMAGE_TAG
+  tag: 1
+
+
 
 service:
   type: NodePort
-  port: 8080
-
+  port: 80

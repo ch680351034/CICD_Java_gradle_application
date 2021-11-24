@@ -3,7 +3,7 @@ pipeline{
     environment {
         REGISTRY_NAME="212.2.243.207:8083"
         IMAGE_NAME="${REGISTRY_NAME}/springapp"
-        TAG="${BUILD_ID}"
+        TAG=${BUILD_ID}
         
     }
     stages{
@@ -34,17 +34,20 @@ pipeline{
         }
         
         stage("code build and push "){
+            
             steps{
                 script {
-                    withCredentials([string(credentialsId: 'docker-registry-pass', variable: 'docker-reg-pass')]) {
+
+                   withCredentials([string(credentialsId: 'docker-registry-pass', variable: 'dockerregpass')]) {
                        sh '''
-                       whereis docker
                        docker build -t ${IMAGE_NAME}:${TAG} .
-                       docker login -u admin -p ${docker-reg-pass} ${REGISTRY_NAME}
+                       docker login -u admin -p ${dockerregpass} ${REGISTRY_NAME}
                        docker push ${IMAGE_NAME}:${TAG}
                        
                        '''
-                    }
+                     }
+
+                    
                     
                  
                 }

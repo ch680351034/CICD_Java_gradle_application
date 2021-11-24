@@ -3,7 +3,7 @@ pipeline{
     environment {
         REGISTRY_NAME="212.2.243.207:8083"
         IMAGE_NAME="${REGISTRY_NAME}/springapp"
-        TAG=${BUILD_ID}
+        TAG="${BUILD_ID}"
         
     }
     stages{

@@ -4,8 +4,7 @@ pipeline{
         REGISTRY_NAME="212.2.243.207:8083"
         IMAGE_NAME="${REGISTRY_NAME}/springapp"
         TAG="${BUILD_ID}"
-        dat-token="o5sLwcMnBgzCS9qCvMtfTt"
-    }
+        }
     stages{
         stage("sonar static analysis"){
             agent {
@@ -26,9 +25,7 @@ pipeline{
                             error "Pipeline aborted due to quality gate failure: ${qg.status}"
                             }
                         }
-
                 }
-
             }
            
         }
@@ -43,21 +40,24 @@ pipeline{
                        docker build -t ${IMAGE_NAME}:${TAG} .
                        docker login -u admin -p ${dockerregpass} ${REGISTRY_NAME}
                        docker push ${IMAGE_NAME}:${TAG}
+                       docker rmi ${IMAGE_NAME}:${TAG}
                        
                        '''
                      }
 
-                 
                 }
-
             }
-           
+          
         }
 
         stage("datree helm charts configuration Validation"){
             steps {
                 dir('kubernetes') {
-                   helm datree test myapp
+
+                   withEnv(['dat-token="o5sLwcMnBgzCS9qCvMtfTt"']) {
+                       helm datree test myapp
+                   }
+
                }
             }
         }

@@ -55,7 +55,7 @@ pipeline{
                 dir('kubernetes') {
 
                    withEnv(['dat-token="o5sLwcMnBgzCS9qCvMtfTt"']) {
-                       helm datree test myapp
+                      sh 'helm datree test myapp'
                    }
 
                }

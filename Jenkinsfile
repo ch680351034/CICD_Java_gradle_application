@@ -34,9 +34,6 @@ pipeline{
         }
         
         stage("code build and push "){
-            agent {
-                    docker { image 'openjdk:11' }
-                }
             steps{
                 script {
                     withCredentials([string(credentialsId: 'docker-registry-pass', variable: 'docker-reg-pass')]) {

@@ -19,5 +19,3 @@ spec:
         image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         ports:
         - containerPort: 8080
-      imagePullSecrets:
-      - name: azureregcred

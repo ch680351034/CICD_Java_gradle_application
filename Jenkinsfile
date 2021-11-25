@@ -55,12 +55,32 @@ pipeline{
                 dir('kubernetes') {
 
                    withEnv(['dat-token="o5sLwcMnBgzCS9qCvMtfTt"']) {
-                      sh 'helm datree test myapp'
+                       helm datree test myapp
                    }
 
                }
             }
         }
+        stage("publish the helm chart to repo "){
+            
+            steps{
+                script {
+
+                   withCredentials([string(credentialsId: 'docker-registry-pass', variable: 'dockerregpass')]) {
+                       dir('kubernetes/') {
+                             sh '''
+                                 helmversion=$( helm show chart myapp | grep version | cut -d: -f 2 | tr -d ' ')
+                                 tar -czvf  myapp-${helmversion}.tgz myapp/
+                                 curl -u admin:$dockerregpass http://212.2.243.207/:8081/repository/helm-hosted/ --upload-file myapp-${helmversion}.tgz -v
+                            '''
+                          }
+                     }
+
+                }
+            }
+          
+        }
+        
 
     }
     post{

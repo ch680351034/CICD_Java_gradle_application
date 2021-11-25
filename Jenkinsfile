@@ -35,10 +35,10 @@ pipeline{
             steps{
                 script {
 
-                   withCredentials([string(credentialsId: 'azure-conreg-password', variable: 'conreg-passwd')]) {
+                   withCredentials([string(credentialsId: 'azure-conreg-password', variable: 'conregpasswd')]) {
                        sh '''
                        docker build -t ${REPO_NAME}:${TAG} .
-                       docker login -u k8sregistryy -p ${conreg-passwd} ${REGISTRY_NAME}
+                       docker login -u k8sregistryy -p ${conregpasswd} ${REGISTRY_NAME}
                        docker push ${REPO_NAME}:${TAG}
                        docker rmi ${REPO_NAME}:${TAG}
 

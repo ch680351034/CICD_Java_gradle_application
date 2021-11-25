@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: 212.2.243.207:8083/springapp
+  repository: k8sregistryy.azurecr.io/springapp
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: 1

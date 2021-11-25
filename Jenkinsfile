@@ -81,18 +81,32 @@ pipeline{
 
         } */
 
-        stage('Hello') {
+        stage('Helm deployment') {
             steps {
-           
+
                 withCredentials([kubeconfigFile(credentialsId: 'azure-cluster-kconfig', variable: 'KUBECONFIG')]) {
                 dir('kubernetes/'){
-                   
+
                    sh 'helm upgrade --install --set image.tag=${TAG} my-webapp myapp'
                 }
-                  
+
 
                 }
-             
+
+            }
+        }
+
+        stage('Manual approal') {
+            steps {
+                   mail bcc: '', body: "<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> please click on follow link to approe/deny the deployment <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "${currentBuild.result} CI: Project name -> ${env.JOB_NAME}", to: "chguru121@gmail.com";
+
+                   input submitter: 'userId', message: 'Ready for deployment?'
+                
+                }
+
+
+                }
+
             }
         }
 
@@ -101,7 +115,7 @@ pipeline{
     post{
         always{
 
-                                        mail bcc: '', body: "<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "${currentBuild.result} CI: Project name -> ${env.JOB_NAME}", to: "deekshith.snsep@gmail.com";
+                                        mail bcc: '', body: "<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "${currentBuild.result} CI: Project name -> ${env.JOB_NAME}", to: "chguru121@gmail.com";
 
         }
 

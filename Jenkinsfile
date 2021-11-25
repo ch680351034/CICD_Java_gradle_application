@@ -80,7 +80,16 @@ pipeline{
             }
 
         } */
+        stage('Manual approal') {
+            steps {
+                   mail bcc: '', body: "<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> please click on follow link to approe/deny the deployment <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "${currentBuild.result} CI: Project name -> ${env.JOB_NAME}", to: "chguru121@gmail.com";
 
+                   input submitter: 'userId', message: 'Ready for deployment?'
+                
+                }
+
+         }
+         
         stage('Helm deployment') {
             steps {
 
@@ -96,22 +105,10 @@ pipeline{
             }
         }
 
-        stage('Manual approal') {
-            steps {
-                   mail bcc: '', body: "<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> please click on follow link to approe/deny the deployment <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "${currentBuild.result} CI: Project name -> ${env.JOB_NAME}", to: "chguru121@gmail.com";
-
-                   input submitter: 'userId', message: 'Ready for deployment?'
-                
-                }
-
-
-                }
-
-            }
-        }
-
+        
 
     }
+
     post{
         always{
 

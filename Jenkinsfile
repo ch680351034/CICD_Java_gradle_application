@@ -70,7 +70,7 @@ pipeline{
                        dir('kubernetes/') {
                              sh '''
                                  helmversion=$( helm show chart myapp | grep version | cut -d: -f 2 | tr -d ' ')
-                                 tar -czvf  myapp-${helmversion}.tgz myapp/
+                                 tar -czvf  myapp-${helmversion}.tar.gz myapp/
                                  curl -u admin:$dockerregpass http://212.2.243.207:8081/repository/helm-hosted/ --upload-file myapp-${helmversion}.tgz -v
                             '''
                           }

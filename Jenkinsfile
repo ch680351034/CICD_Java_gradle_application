@@ -1,7 +1,7 @@
 pipeline{
     agent any
     environment {
-        REGISTRY_NAME="212.2.243.207:8083"
+        REGISTRY_NAME="k8sregistryy.azurecr.io"
         REPO_NAME="${REGISTRY_NAME}/springapp"
         TAG="${BUILD_ID}"
         }
@@ -35,10 +35,10 @@ pipeline{
             steps{
                 script {
 
-                   withCredentials([string(credentialsId: 'docker-registry-pass', variable: 'dockerregpass')]) {
+                   withCredentials([string(credentialsId: 'azure-conreg-password', variable: 'azure-conreg-passwd')]) {
                        sh '''
                        docker build -t ${REPO_NAME}:${TAG} .
-                       docker login -u admin -p ${dockerregpass} ${REGISTRY_NAME}
+                       docker login -u admin -p ${azure-conreg-passwd} ${REGISTRY_NAME}
                        docker push ${REPO_NAME}:${TAG}
                        docker rmi ${REPO_NAME}:${TAG}
 
@@ -61,7 +61,7 @@ pipeline{
                }
             }
         }
-        stage("publish the helm chart to repo "){
+        /* stage("publish the helm chart to repo "){
 
             steps{
                 script {
@@ -79,7 +79,7 @@ pipeline{
                 }
             }
 
-        }
+        } */
 
         stage('Hello') {
             steps {
@@ -87,7 +87,7 @@ pipeline{
                 withCredentials([kubeconfigFile(credentialsId: 'azure-cluster-kconfig', variable: 'KUBECONFIG')]) {
                 dir('kubernetes/'){
                    
-                  sh 'helm upgrade --install --set image.tag="${TAG}" my-webapp myapp'
+                   helm upgrade --install --set image.tag=${TAG} my-webapp myapp
                 }
                   
 

@@ -103,6 +103,19 @@ pipeline{
                    sh 'helm upgrade --install --set image.tag=${TAG} my-webapp myapp'
                 }
 
+                }
+
+            }
+        }
+
+        stage('deployment validation') {
+            steps {
+
+                withCredentials([kubeconfigFile(credentialsId: 'azure-cluster-kconfig', variable: 'KUBECONFIG')]) {
+                dir('kubernetes/'){
+
+                   sh 'kubectl run curl-pod --image=curlimages/curl --rm --restart=Never -i -- curl 20.102.18.150'
+                }
 
                 }
 

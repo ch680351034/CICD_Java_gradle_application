@@ -87,7 +87,7 @@ pipeline{
                 withCredentials([kubeconfigFile(credentialsId: 'azure-cluster-kconfig', variable: 'KUBECONFIG')]) {
                 dir('kubernetes/'){
                    
-                   helm upgrade --install --set image.tag="${TAG}" my-webapp myapp
+                  sh 'helm upgrade --install --set image.tag="${TAG}" my-webapp myapp'
                 }
                   
 
